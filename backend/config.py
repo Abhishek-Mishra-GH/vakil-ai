@@ -25,6 +25,11 @@ class Settings(BaseSettings):
     DB_COMMAND_TIMEOUT: int = 60
     AUTO_APPLY_SCHEMA: bool = True
 
+     # Auth
+    JWT_SECRET_KEY: str = "replace-this-with-a-very-long-random-secret"
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRE_DAYS: int = 7
+
     # CORS
     CORS_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3000"
 
