@@ -36,6 +36,15 @@ class Settings(BaseSettings):
     # Paths
     STATUTES_PATH: str = str(DATA_DIR / "statutes.json")
 
+    # Cohere
+    COHERE_API_KEY: str = ""
+    COHERE_RERANK_MODEL: str = "rerank-english-v3.0"
+
+    # AWS Textract
+    AWS_ACCESS_KEY_ID: str = ""
+    AWS_SECRET_ACCESS_KEY: str = ""
+    AWS_REGION: str = "ap-south-1"
+
     # Cloudinary
     CLOUDINARY_URL: str = ""
     LOCAL_UPLOAD_DIR: str = str(DATA_DIR / "uploads")

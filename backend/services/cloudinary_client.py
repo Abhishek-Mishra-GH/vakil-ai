@@ -166,7 +166,7 @@ def _configure_cloudinary_client()->None:
     raw=(settings.CLOUDINARY_URL or "").strip()
     parsed=urlparse(raw)
 
-    cloudinary.config(
+    cloudinary.config( # type: ignore
         cloud_name=(parsed.hostname or "").strip(),
         api_key=unquote(parsed.username or ""),
         api_secret=unquote(parsed.password or ""),
