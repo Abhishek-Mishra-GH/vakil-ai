@@ -36,6 +36,15 @@ class Settings(BaseSettings):
     # Paths
     STATUTES_PATH: str = str(DATA_DIR / "statutes.json")
 
+    # Cloudinary
+    CLOUDINARY_URL: str = ""
+    LOCAL_UPLOAD_DIR: str = str(DATA_DIR / "uploads")
+
+    # Document pipeline
+    OCR_CONFIDENCE_THRESHOLD: float = 60.0
+    MIN_CHUNK_CHARS: int = 80
+    MAX_UPLOAD_SIZE_MB: int = 50
+
     @field_validator("DEBUG", "AUTO_APPLY_SCHEMA", mode="before")
     @classmethod
     def _parse_debug(cls, value: Any) -> bool:

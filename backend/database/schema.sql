@@ -1,4 +1,4 @@
--- VakilAI -- Full multi-tenant schema
+ -- VakilAI -- Full multi-tenant schema
 -- Safe to re-run in development.
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -8,7 +8,7 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE TABLE IF NOT EXISTS users (
     id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     email           TEXT UNIQUE NOT NULL,
-    hashed_password TEXT NOT NULL,
+    hashed_password TEXT NOT NULL, 
     full_name       TEXT NOT NULL,
     bar_council_id  TEXT,
     phone           TEXT,
