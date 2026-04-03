@@ -1,0 +1,10 @@
+[project]
+name = "Vakil-AI-backend"
+version = "0.1.0"
+description = "Vakil-AI-backend services"
+requires-python = ">=3.10"
+
+dependencies = [
+  "fastapi==0.109.0",
+  "uvicorn[standard]==0.27.0"
+]
