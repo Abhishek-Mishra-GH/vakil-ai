@@ -1815,6 +1815,152 @@ html:has(.white-theme) {
   color: #1a1f35;
 }
 
+/* White theme - Brief page specific components */
+.white-theme .eyebrow {
+  color: #1a3a88;
+}
+
+.white-theme .countdown-box {
+  color: #64748b;
+}
+
+.white-theme .countdown-box strong {
+  color: #1a3a88;
+}
+
+.white-theme .brief-grid {
+  gap: 16px;
+}
+
+.white-theme .brief-card {
+  border: 1px solid rgba(51, 65, 85, 0.15);
+  background: #f8f9fb;
+  color: #1a1f35;
+}
+
+.white-theme .brief-card h3 {
+  color: #475569;
+}
+
+.white-theme .brief-card h4 {
+  color: #1a1f35;
+}
+
+.white-theme .brief-card p {
+  color: #475569;
+}
+
+.white-theme .quote-card {
+  background: #eef2f7;
+  border: 1px solid rgba(51, 65, 85, 0.2);
+}
+
+.white-theme .quote-card p {
+  color: #1a3a88;
+  font-style: italic;
+}
+
+.white-theme .brief-list-item {
+  border: 1px solid rgba(51, 65, 85, 0.1);
+  background: #f5f7fa;
+  color: #1a1f35;
+}
+
+.white-theme .brief-index {
+  color: #94a3b8;
+}
+
+.white-theme .timeline-item {
+  border: 1px solid rgba(51, 65, 85, 0.1);
+  background: #f5f7fa;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.white-theme .timeline-dot {
+  background: #1a3a88;
+}
+
+.white-theme .timeline-item small {
+  color: #475569;
+}
+
+.white-theme .timeline-item h4 {
+  color: #1a1f35;
+}
+
+.white-theme .timeline-item p {
+  color: #475569;
+}
+
+.white-theme .threat-item,
+.white-theme .weak-point-item {
+  border: 1px solid rgba(51, 65, 85, 0.1);
+  background: #f5f7fa;
+  color: #1a1f35;
+}
+
+.white-theme .threat-item small {
+  color: #475569;
+}
+
+.white-theme .pill {
+  border: 1px solid rgba(26, 58, 136, 0.3);
+  background: rgba(26, 58, 136, 0.08);
+  color: #1a3a88;
+}
+
+.white-theme .pill-high {
+  color: #dc2626;
+  border-color: rgba(220, 38, 38, 0.3);
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.white-theme .row-wrap {
+  gap: 10px;
+}
+
+.white-theme .field-inline span,
+.white-theme .field-inline label {
+  color: #1a1f35;
+}
+
+.white-theme select.field-input {
+  background: white;
+  color: #1a1f35;
+  border: 1px solid rgba(51, 65, 85, 0.2);
+}
+
+.white-theme .precedent-grid {
+  gap: 10px;
+}
+
+.white-theme .precedent-card {
+  background: #f5f7fa;
+  border: 1px solid rgba(51, 65, 85, 0.1);
+  color: #1a1f35;
+}
+
+.white-theme .precedent-card h4 {
+  color: #1a1f35;
+}
+
+.white-theme .precedent-card p {
+  color: #475569;
+}
+
+.white-theme .precedent-card small {
+  color: #64748b;
+}
+
+.white-theme .precedent-link {
+  color: #1a3a88;
+}
+
+.white-theme .precedent-link:hover {
+  color: #0f2a6a;
+}
+
 @media print {
   * {
     -webkit-print-color-adjust: exact;
