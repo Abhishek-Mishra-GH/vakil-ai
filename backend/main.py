@@ -1,7 +1,5 @@
 from __future__ import annotations
-
 from contextlib import asynccontextmanager
-import logging
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,12 +8,8 @@ from fastapi.responses import JSONResponse
 from config import BACKEND_DIR, REPO_ROOT, settings
 from database import close_pool, create_pool
 
-from routers import auth
-# from routers import brief, cases, contradictions, documents, moot, qa, search, xray
-
-from services.cloudinary_client import get_cloudinary_diagnostics
-
-logger = logging.getLogger("uvicorn.error")
+from routers import auth, documents
+# from routers import brief, cases, contradictions, moot, qa, search, xray
 
 
 @asynccontextmanager
@@ -43,7 +37,7 @@ app.add_middleware(
 
 app.include_router(auth.router)
 # app.include_router(cases.router)
-# app.include_router(documents.router)
+app.include_router(documents.router)
 # app.include_router(search.router)
 # app.include_router(xray.router)
 # app.include_router(qa.router)
