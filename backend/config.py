@@ -36,6 +36,21 @@ class Settings(BaseSettings):
     # Paths
     STATUTES_PATH: str = str(DATA_DIR / "statutes.json")
 
+    
+    # OpenAI
+    OPENAI_API_KEY: str = ""
+    OPENAI_EMBEDDING_MODEL: str = "text-embedding-3-small"
+    OPENAI_EMBEDDING_DIM: int = 1536
+    OPENAI_QA_MODEL: str = "gpt-4.1-mini"
+
+    # Anthropic
+    ANTHROPIC_API_KEY: str = ""
+    ANTHROPIC_MODEL: str = "claude-sonnet-4-20250514"
+
+    # Groq
+    GROQ_API_KEY: str = ""
+    GROQ_MODEL: str = "llama-3.3-70b-versatile"
+
     # Cohere
     COHERE_API_KEY: str = ""
     COHERE_RERANK_MODEL: str = "rerank-english-v3.0"

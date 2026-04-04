@@ -6,7 +6,7 @@ import asyncpg
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, EmailStr, field_validator
 
-from backend.auth import create_access_token, get_current_user, hash_password, verify_password
+from auth import create_access_token, get_current_user, hash_password, verify_password
 from database.connection import get_db
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
