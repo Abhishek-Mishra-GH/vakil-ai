@@ -41,7 +41,7 @@ app.include_router(documents.router)
 app.include_router(search.router)
 app.include_router(xray.router)
 app.include_router(qa.router)
-# app.include_router(contradictions.router)
+app.include_router(contradictions.router)
 app.include_router(brief.router)
 # app.include_router(moot.router)
 
