@@ -1616,9 +1616,15 @@ body.sidebar-collapsed .sidebar-brand-block {
   --text-secondary: #64748b;
 }
 
+.white-theme body {
+  background: white;
+  color: #1a1f35;
+}
+
 .white-theme {
   color: #1a1f35;
 }
+
 
 .white-theme .page-header h1 {
   color: #1a1f35;
@@ -1626,6 +1632,11 @@ body.sidebar-collapsed .sidebar-brand-block {
 
 .white-theme .page-header p {
   color: #475569;
+}
+
+.white-theme .top-nav-wrap {
+  background: white !important;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.1);
 }
 
 .white-theme .card {
@@ -1636,7 +1647,7 @@ body.sidebar-collapsed .sidebar-brand-block {
 }
 
 .white-theme .section-title {
-  color: #475569;
+  color: #0d1b2e;
 }
 
 .white-theme .muted {
@@ -1699,7 +1710,7 @@ body.sidebar-collapsed .sidebar-brand-block {
   border: 1px solid #1a3a88;
 }
 
-.white-theme.app-sidebar {
+.white-theme .app-sidebar {
   background: linear-gradient(180deg, #ffffff 0%, #f8f9fb 100%);
   border-right: 1px solid rgba(51, 65, 85, 0.15);
 }
@@ -1788,8 +1799,9 @@ body.sidebar-collapsed .sidebar-brand-block {
   color: #1a1f35;
 }
 
-.white-theme input::placeholder {
-  color: #94a3b8;
+.white-theme .hero {
+  background: white;
+  border: 1px solid rgba(51, 65, 85, 0.15);
 }
 
 .white-theme button {
