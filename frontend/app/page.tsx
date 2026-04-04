@@ -256,7 +256,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; 2024 VakilAI. All rights reserved.</p>
+            <p>&copy; 2026 VakilAI. All rights reserved.</p>
           </div>
         </footer>
       </main>
