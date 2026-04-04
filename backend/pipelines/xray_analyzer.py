@@ -43,6 +43,7 @@ def _load_statutes() -> list[dict[str, Any]]:
 
 STATUTES: list[dict[str, Any]] = _load_statutes()
 STATUTES_TEXT = json.dumps(STATUTES, indent=2, ensure_ascii=False)
+print(f"Loaded {len(STATUTES)} statutes for XRay analysis.")
 logger = logging.getLogger("uvicorn.error")
 
 

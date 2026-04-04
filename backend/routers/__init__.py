@@ -1,13 +1,13 @@
-from . import auth, documents
+from . import auth, documents, cases, xray
 
 __all__ = [
     "auth",
     # "brief",
-    # "cases",
+    "cases",
     # "contradictions",
     "documents",
     # "moot",
     # "qa",
     # "search",
-    # "xray",
+    "xray",
 ]

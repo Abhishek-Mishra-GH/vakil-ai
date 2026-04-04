@@ -8,8 +8,8 @@ from fastapi.responses import JSONResponse
 from config import BACKEND_DIR, REPO_ROOT, settings
 from database import close_pool, create_pool
 
-from routers import auth, documents
-# from routers import brief, cases, contradictions, moot, qa, search, xray
+from routers import auth, documents, xray, cases
+# from routers import brief, contradictions, moot, qa, search
 
 
 @asynccontextmanager
@@ -36,10 +36,10 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
-# app.include_router(cases.router)
+app.include_router(cases.router)
 app.include_router(documents.router)
 # app.include_router(search.router)
-# app.include_router(xray.router)
+app.include_router(xray.router)
 # app.include_router(qa.router)
 # app.include_router(contradictions.router)
 # app.include_router(brief.router)

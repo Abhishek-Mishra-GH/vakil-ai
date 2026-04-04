@@ -1,0 +1,218 @@
+[
+  {
+    "id": "CPC-80",
+    "act": "Code of Civil Procedure, 1908",
+    "section": "Section 80",
+    "title": "Notice to Government and Public Officers",
+    "summary": "Requires issuance of a mandatory notice before instituting a suit against the government or a public officer. Cited in the legal notice as the statutory basis for pre-litigation notification to Kapoor Enterprises.",
+    "keywords": ["pre-suit notice", "mandatory notice", "civil procedure", "government notice", "notice period"],
+    "clause_types": ["Procedural", "Pre-litigation", "Notice"]
+  },
+  {
+    "id": "ICA-1872-GENERAL",
+    "act": "Indian Contract Act, 1872",
+    "section": "General",
+    "title": "Law of Contract - Breach and Recovery",
+    "summary": "Governs the formation, performance, and breach of contracts in India. Cited as the substantive legal basis for the claim of breach of contract by Kapoor Enterprises for non-payment of dues under the ERP Services Agreement.",
+    "keywords": ["breach of contract", "contractual obligation", "non-payment", "recovery", "civil liability"],
+    "clause_types": ["Substantive", "Breach", "Recovery"]
+  },
+  {
+    "id": "ICA-1872-S23",
+    "act": "Indian Contract Act, 1872",
+    "section": "Section 23",
+    "title": "Unlawful Agreements Opposed to Public Policy",
+    "summary": "Renders void any agreement whose object or consideration is opposed to public policy. Cited in the plaint to challenge the enforceability of Clause 13 (unilateral termination without compensation), arguing it is contrary to public policy and therefore void.",
+    "keywords": ["public policy", "void agreement", "unlawful object", "unilateral termination", "unconscionable clause"],
+    "clause_types": ["Validity", "Public Policy", "Termination", "Void"]
+  },
+  {
+    "id": "AGMT-CL4",
+    "act": "Software Implementation and ERP Services Agreement (MT/KE/ERP/2022/007)",
+    "section": "Clause 4",
+    "title": "Payment Schedule / Milestone-Based Payment",
+    "summary": "Sets out the total contractual consideration payable in milestone-linked tranches: Advance, SRS completion, Development & UAT, Go-Live, and AMC Year 1. Clause 4.2 further provides for payment within a reasonable time after milestone completion subject to internal approval, which the plaintiff alleges is being misused to indefinitely delay payments.",
+    "keywords": ["payment schedule", "milestone payment", "tranches", "consideration", "advance fee", "AMC", "UAT", "go-live"],
+    "clause_types": ["Payment", "Milestone", "Commercial", "Performance"]
+  },
+  {
+    "id": "AGMT-CL7-3",
+    "act": "Software Implementation and ERP Services Agreement (MT/KE/ERP/2022/007)",
+    "section": "Clause 7.3",
+    "title": "Defect Liability Period",
+    "summary": "Stipulates the period within which the client must raise deficiency notices regarding the ERP Solution. The plaintiff argues no such notice was raised within this period, making the defendant's later allegations of deficiencies an afterthought and an attempt to avoid payment.",
+    "keywords": ["defect liability", "deficiency notice", "warranty period", "ERP defects", "notice of deficiency", "time-barred objection"],
+    "clause_types": ["Defect Liability", "Warranty", "Notice", "Time Limit"]
+  },
+  {
+    "id": "AGMT-CL9-1",
+    "act": "Software Implementation and ERP Services Agreement (MT/KE/ERP/2022/007)",
+    "section": "Clause 9.1",
+    "title": "Interest on Overdue Payments",
+    "summary": "Provides for interest on overdue payments at prevailing bank rate plus 2% per annum. Both documents note this clause is ambiguously worded as it fails to specify the applicable reference bank or base rate, though the plaintiff claims entitlement to interest at 18% p.a.",
+    "keywords": ["interest", "overdue payment", "bank rate", "delayed payment", "penalty interest", "ambiguous clause", "18% per annum"],
+    "clause_types": ["Interest", "Penalty", "Payment", "Ambiguity"]
+  },
+  {
+    "id": "AGMT-CL11",
+    "act": "Software Implementation and ERP Services Agreement (MT/KE/ERP/2022/007)",
+    "section": "Clause 11",
+    "title": "Indemnification",
+    "summary": "Requires Mehta Tech to indemnify Kapoor Enterprises and its affiliates against all claims, liabilities, damages, costs, and expenses arising from the ERP Solution irrespective of Kapoor Enterprises' own negligence or fault. The plaintiff contends this clause is unconscionable, one-sided, executed under economic duress, void ab initio or voidable, and contrary to equity and natural justice.",
+    "keywords": ["indemnification", "indemnity", "unconscionable clause", "one-sided", "economic duress", "void ab initio", "voidable", "liability", "equity"],
+    "clause_types": ["Indemnification", "Liability", "Equity", "Validity", "Void"]
+  },
+  {
+    "id": "AGMT-CL13",
+    "act": "Software Implementation and ERP Services Agreement (MT/KE/ERP/2022/007)",
+    "section": "Clause 13",
+    "title": "Unilateral Termination Without Cause",
+    "summary": "Grants Kapoor Enterprises the unilateral right to terminate the Agreement at any time, for any reason or no reason, upon 7 days written notice, without liability to compensate Mehta Tech for work completed, costs incurred, or profits foregone. The plaintiff challenges this as unconscionable, contra proferentem, opposed to public policy under Section 23 of the Indian Contract Act, and therefore unenforceable.",
+    "keywords": ["termination", "unilateral termination", "without cause", "notice period", "contra proferentem", "unconscionable", "no-fault termination", "public policy"],
+    "clause_types": ["Termination", "Unilateral", "Unconscionable", "Public Policy", "Validity"]
+  },
+  {
+    "id": "AGMT-CL15",
+    "act": "Software Implementation and ERP Services Agreement (MT/KE/ERP/2022/007)",
+    "section": "Clause 15",
+    "title": "Dispute Resolution / Arbitration",
+    "summary": "Provides for resolution of all disputes, differences, claims, and questions arising out of or in connection with the Agreement through arbitration before a sole arbitrator appointed by mutual consent, failing which either party may approach a court of competent jurisdiction. The plaintiff argues the clause is rendered inoperative because the defendant denied the very existence of the Agreement.",
+    "keywords": ["arbitration", "dispute resolution", "sole arbitrator", "mutual consent", "inoperative arbitration clause", "competent jurisdiction", "alternative dispute resolution"],
+    "clause_types": ["Arbitration", "Dispute Resolution", "Jurisdiction", "ADR"]
+  },
+  {
+    "id": "CPC-OV7-R1",
+    "act": "Code of Civil Procedure, 1908",
+    "section": "Order VII, Rule 1",
+    "title": "Particulars to be Contained in Plaint",
+    "summary": "Prescribes the mandatory contents of a plaint including particulars of parties, facts constituting the cause of action, relief claimed, and valuation of the suit. The plaint in this matter is filed under this provision.",
+    "keywords": ["plaint", "civil suit", "cause of action", "relief", "particulars of parties", "suit filing"],
+    "clause_types": ["Procedural", "Pleading", "Civil Procedure"]
+  },
+  {
+    "id": "CCA-2015",
+    "act": "Commercial Courts Act, 2015",
+    "section": "General",
+    "title": "Jurisdiction of Commercial Courts",
+    "summary": "Establishes commercial courts for adjudication of commercial disputes above a specified pecuniary threshold. Jurisdiction is invoked as the suit value exceeds Rs. 3,00,000/- and the dispute arises from a commercial contract, vesting jurisdiction in the Commercial Division of the District Court at Gurugram.",
+    "keywords": ["commercial court", "commercial dispute", "pecuniary jurisdiction", "commercial division", "specified value", "commercial contract"],
+    "clause_types": ["Jurisdiction", "Commercial", "Procedural"]
+  },
+  {
+    "id": "LIMITATION-1963",
+    "act": "Limitation Act, 1963",
+    "section": "General",
+    "title": "Limitation Period for Civil Suits",
+    "summary": "Prescribes time limits within which civil suits must be filed. The plaintiff asserts the suit is within limitation as the cause of action first arose on 1st March 2023 and is a continuing cause of action, recurring on each date of non-payment.",
+    "keywords": ["limitation period", "time-barred", "continuing cause of action", "suit filing period", "period of limitation"],
+    "clause_types": ["Limitation", "Procedural", "Time Limit"]
+  },
+  {
+    "id": "ISA-1899",
+    "act": "Indian Stamp Act, 1899",
+    "section": "General",
+    "title": "Stamping of Agreements",
+    "summary": "Requires contracts and agreements to be duly stamped in accordance with prescribed stamp duty. Referenced in the legal notice to confirm the ERP Services Agreement was properly stamped, lending it evidentiary validity.",
+    "keywords": ["stamp duty", "stamping", "agreement validity", "evidentiary value", "stamp paper"],
+    "clause_types": ["Validity", "Evidentiary", "Formality"]
+  },
+  {
+    "id": "CA-2013",
+    "act": "Companies Act, 2013",
+    "section": "General",
+    "title": "Incorporation and Legal Status of Company",
+    "summary": "Governs the incorporation and legal personality of companies in India. Both Mehta Tech Pvt. Ltd. and its capacity to sue and be sued are established under this Act, with CIN: U72900MH2016PTC278341.",
+    "keywords": ["company incorporation", "legal personality", "capacity to sue", "private limited company", "CIN", "corporate identity"],
+    "clause_types": ["Corporate", "Legal Status", "Capacity"]
+  },
+  {
+    "id": "UNJUST-ENRICHMENT",
+    "act": "Indian Contract Act, 1872 / General Law of Restitution",
+    "section": "General Principles",
+    "title": "Unjust Enrichment",
+    "summary": "A legal principle under which a party that has received a benefit without paying for it is unjustly enriched at the expense of the providing party. Cited as a cause of action against Kapoor Enterprises for accepting and using the ERP Solution without paying the contracted amounts.",
+    "keywords": ["unjust enrichment", "restitution", "quasi-contract", "benefit received", "non-payment", "services rendered"],
+    "clause_types": ["Restitution", "Quasi-Contract", "Unjust Enrichment", "Recovery"]
+  },
+  {
+    "id": "MISREPRESENTATION",
+    "act": "Indian Contract Act, 1872",
+    "section": "Sections 17-18",
+    "title": "Misrepresentation / Fraud",
+    "summary": "Covers actionable misrepresentation and fraud in contractual dealings. Invoked against Kapoor Enterprises for repeatedly assuring settlement of dues without intention of honouring such assurances, and for denying the existence of a binding agreement despite having accepted deliverables and made part payments.",
+    "keywords": ["misrepresentation", "fraud", "false assurance", "deceit", "promise without intention", "denial of agreement"],
+    "clause_types": ["Misrepresentation", "Fraud", "Liability", "Actionable Wrong"]
+  },
+  {
+    "id": "AGMT-CL16",
+    "act": "Information Technology Act, 2000",
+    "section": "Sections 4, 5, 10A, 11, 12, 13",
+    "title": "Notices and Electronic Communications",
+    "summary": "Specifies how notices, approvals, acknowledgments, and other written communications are to be sent and when they are deemed received, including by email or other electronic record. This is useful where parties exchange notices and approvals electronically.",
+    "keywords": ["notice", "communication", "email", "deemed receipt", "electronic record", "acknowledgment"],
+    "clause_types": ["Notice", "Communication", "Electronic", "Procedural"]
+  },
+  {
+    "id": "AGMT-CL17",
+    "act": "Indian Contract Act, 1872",
+    "section": "Section 56",
+    "title": "Force Majeure / Frustration",
+    "summary": "Excuses non-performance or delay caused by events beyond reasonable control such as natural disasters, government action, or network-wide outages, and sets out suspension and termination rights if the event continues.",
+    "keywords": ["force majeure", "frustration", "delay", "non-performance", "events beyond control"],
+    "clause_types": ["Force Majeure", "Performance", "Risk Allocation", "Termination"]
+  },
+  {
+    "id": "AGMT-CL18",
+    "act": "Indian Contract Act, 1872",
+    "section": "Sections 62, 63, 65",
+    "title": "Amendment, Novation and Waiver",
+    "summary": "Requires written modification for any change to the agreement, prevents oral variation from creating uncertainty, and records that waiver of one breach does not waive future breaches.",
+    "keywords": ["amendment", "novation", "variation", "waiver", "written modification"],
+    "clause_types": ["Variation", "Waiver", "Contract Administration", "Performance"]
+  },
+  {
+    "id": "AGMT-CL19",
+    "act": "Indian Contract Act, 1872 / Information Technology Act, 2000",
+    "section": "Sections 37, 72, 72A",
+    "title": "Confidentiality and Data Security",
+    "summary": "Protects technical, commercial, financial, and personal information received under the agreement, restricts disclosure, and requires reasonable security practices for electronic records and data shared between the parties.",
+    "keywords": ["confidentiality", "data security", "non-disclosure", "personal information", "technical data", "reasonable security"],
+    "clause_types": ["Confidentiality", "Data Protection", "Security", "Restricted Use"]
+  },
+  {
+    "id": "AGMT-CL20",
+    "act": "Information Technology Act, 2000",
+    "section": "Sections 4, 5, 10A",
+    "title": "Electronic Execution and Counterparts",
+    "summary": "Confirms that the agreement may be executed in counterparts and through electronic signatures or other legally recognized electronic means, with each counterpart treated as an original.",
+    "keywords": ["electronic signature", "counterparts", "e-sign", "digital execution", "electronic contract"],
+    "clause_types": ["Execution", "Electronic", "Formality", "Validity"]
+  },
+  {
+    "id": "AGMT-CL21",
+    "act": "Indian Contract Act, 1872",
+    "section": "Sections 10, 29, 37",
+    "title": "Severability",
+    "summary": "Provides that if any provision is held invalid, illegal, or unenforceable, the remaining provisions continue in full force, and the parties will replace the affected term with a valid term closest to the original intent.",
+    "keywords": ["severability", "invalid clause", "partial invalidity", "replacement term", "unenforceable"],
+    "clause_types": ["Validity", "Construction", "Risk Allocation"]
+  },
+  {
+    "id": "AGMT-CL22",
+    "act": "Indian Contract Act, 1872",
+    "section": "Sections 10, 37, 62",
+    "title": "Entire Agreement",
+    "summary": "States that the written agreement and its schedules constitute the entire understanding between the parties and supersede prior oral or written discussions, letters, or drafts on the same subject.",
+    "keywords": ["entire agreement", "integration", "supersedes", "prior discussions", "schedules"],
+    "clause_types": ["Construction", "Integration", "Contract Administration"]
+  },
+  {
+    "id": "AGMT-CL23",
+    "act": "Code of Civil Procedure, 1908 / Commercial Courts Act, 2015 / Arbitration and Conciliation Act, 1996",
+    "section": "Order VII; General; Sections 7, 20, 28, 42A",
+    "title": "Governing Law, Jurisdiction and Dispute Forum",
+    "summary": "Clarifies that Indian law governs the agreement, identifies the chosen court forum for interim relief or enforcement, and preserves the arbitration process where disputes are referred to arbitration. This helps avoid forum disputes and aligns with the existing arbitration clause.",
+    "keywords": ["governing law", "jurisdiction", "arbitration", "forum", "court", "enforcement"],
+    "clause_types": ["Jurisdiction", "Governing Law", "Arbitration", "Dispute Resolution"]
+  }
+]

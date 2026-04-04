@@ -12,10 +12,8 @@ from fastapi.responses import Response
 from auth import get_current_user
 from config import settings
 from database.connection import get_db
-
 # from pipelines.contradiction_engine import detect_contradictions_for_case
-# from pipelines.ingestion import run_ingestion_pipeline
-
+from pipelines.ingestion import run_ingestion_pipeline
 from services.cloudinary_client import build_private_download_url, build_signed_delivery_url, delete_file, save_local_pdf_copy, upload_pdf
 
 router = APIRouter(prefix="/api/documents", tags=["documents"])
@@ -28,7 +26,7 @@ async def upload_document(
     file: UploadFile = File(...),
     case_id: str = Form(..., alias="case_id"),
     db=Depends(get_db),
-    current_user=Depends(get_current_user),
+    current_user=Depends(get_current_user), # type: ignore
 ):
     original_filename = Path((file.filename or "").strip()).name
     if not original_filename:
@@ -116,6 +114,15 @@ async def upload_document(
         detail = str(exc)[:200] if settings.DEBUG else "Could not save document metadata"
         raise HTTPException(status_code=500, detail=detail)
 
+    background_tasks.add_task(
+        run_ingestion_pipeline,
+        doc_id=document_id,
+        case_id=case_id,
+        user_id=current_user["id"],
+        file_url=local_file_url,
+        file_bytes=file_bytes,
+    )
+
     return {
         "document_id": document_id,
         "status": "pending",
@@ -124,7 +131,7 @@ async def upload_document(
 
 
 @router.get("/{doc_id}/status")
-async def get_document_status(doc_id: str, db=Depends(get_db), current_user=Depends(get_current_user)):
+async def get_document_status(doc_id: str, db=Depends(get_db), current_user=Depends(get_current_user)): # pyright: ignore[reportArgumentType]
     row = await db.fetchrow(
         """
         SELECT
@@ -157,7 +164,7 @@ async def get_document_status(doc_id: str, db=Depends(get_db), current_user=Depe
 
 
 @router.get("/{doc_id}/file")
-async def get_document_file(doc_id: str, db=Depends(get_db), current_user=Depends(get_current_user)):
+async def get_document_file(doc_id: str, db=Depends(get_db), current_user=Depends(get_current_user)): # type: ignore
     row = await db.fetchrow(
         """
         SELECT id, original_filename, file_url, cloudinary_public_id
@@ -193,7 +200,7 @@ async def get_document_file(doc_id: str, db=Depends(get_db), current_user=Depend
 
 
 @router.delete("/{doc_id}")
-async def delete_document(doc_id: str, db=Depends(get_db), current_user=Depends(get_current_user)):
+async def delete_document(doc_id: str, db=Depends(get_db), current_user=Depends(get_current_user)): # type: ignore
     row = await db.fetchrow(
         """
         SELECT id, case_id, cloudinary_public_id
@@ -208,11 +215,13 @@ async def delete_document(doc_id: str, db=Depends(get_db), current_user=Depends(
 
     await db.execute("DELETE FROM documents WHERE id=$1 AND user_id=$2", doc_id, current_user["id"])
     delete_file(row["cloudinary_public_id"])
+
+    # await detect_contradictions_for_case(case_id=str(row["case_id"]), user_id=current_user["id"])
     return {"status": "deleted"}
 
 
 @router.get("")
-async def list_documents(db=Depends(get_db), current_user=Depends(get_current_user)):
+async def list_documents(db=Depends(get_db), current_user=Depends(get_current_user)): # type: ignore
     rows = await db.fetch(
         """
         SELECT
