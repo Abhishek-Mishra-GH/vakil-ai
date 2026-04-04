@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Vakil AI is a comprehensive legal technology platform that empowers legal professionals with AI-driven document analysis, case management, and legal research capabilities. The application combines advanced NLP, machine learning embeddings, and cloud services to streamline legal workflows and enhance case preparation efficiency.
+VakilAI is a specialized preparation infrastructure designed for Indian litigation lawyers to streamline the review of massive case files. Built on the principle of zero-trust generation, every piece of information provided by the AI is hard-linked to a specific page and paragraph in the uploaded documents. The system acts as a secure, isolated vault for proprietary data, ensuring that no case information is used for training or shared across users. By focusing on reliability and transparency, VakilAI helps lawyers identify risks and contradictions that might otherwise be missed in hundreds of pages of legal documentation.
 
 ---
 
