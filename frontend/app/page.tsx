@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-// import TopNav from "@/components/TopNav";
+import TopNav from "@/components/TopNav";
 
 export default function HomePage() {
   return (
     <div className="landing-shell">
-      {/* <TopNav /> */}
+      <TopNav />
       <main className="landing-main">
         <section className="hero">
           <div className="hero-badge">Litigation Intelligence for Indian Advocates</div>
