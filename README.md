@@ -10,11 +10,11 @@ VakilAI is a specialized preparation infrastructure designed for Indian litigati
 
 | Category | Technology Stack |
 |----------|------------------|
-| **Frontend** | Next.js, React, TypeScript |
+| **Frontend** | Next.js, React, TypeScript ,TailwindCSS|
 | **Backend** | Python, FastAPI |
-| **Database** | PostgreSQL, SQL |
+| **Database** | PostgreSQL, pgvector, SQL |
 | **Document Processing** | AWS Textract, Vector Embeddings, Chunking |
-| **AI/ML Services** | OpenAI Integration, Embedding Models |
+| **AI/ML Services** | OpenAI Embedding Models, Groq(llama3-70b-versatile) |
 | **Cloud Services** | Vultr (VPS), Cloudinary, ElevenLabs, Indian Kanoon API |
 | **Other/Tools** | pnpm, uv/venv, Git/Github |
 
