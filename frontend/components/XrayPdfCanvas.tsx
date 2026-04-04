@@ -40,14 +40,17 @@ export default function XrayPdfCanvas({
       try {
         const reactPdfModule = await import("react-pdf");
         if (!isPdfWorkerConfigured) {
-          reactPdfModule.pdfjs.GlobalWorkerOptions.workerSrc =
-            `https://unpkg.com/pdfjs-dist@${reactPdfModule.pdfjs.version}/build/pdf.worker.min.mjs`;
+          reactPdfModule.pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${reactPdfModule.pdfjs.version}/build/pdf.worker.min.mjs`;
           isPdfWorkerConfigured = true;
         }
         if (active) setReactPdf(reactPdfModule);
       } catch (err) {
         if (!active) return;
-        onLoadError(err instanceof Error ? err.message : "Could not initialize PDF renderer");
+        onLoadError(
+          err instanceof Error
+            ? err.message
+            : "Could not initialize PDF renderer",
+        );
       }
     })();
 
@@ -89,7 +92,11 @@ export default function XrayPdfCanvas({
           file={pdfUrl}
           loading={<p className="xray-canvas-note">Loading PDF...</p>}
           onLoadSuccess={({ numPages }) => onLoadSuccess(numPages)}
-          onLoadError={(err) => onLoadError(err instanceof Error ? err.message : "Could not render PDF")}
+          onLoadError={(err) =>
+            onLoadError(
+              err instanceof Error ? err.message : "Could not render PDF",
+            )
+          }
         >
           <Page
             key={`${currentPage}-${pdfPageWidth}`}
@@ -101,20 +108,22 @@ export default function XrayPdfCanvas({
         </Document>
         <div className="xray-canvas-grid" />
         <div className="xray-overlay-layer">
-          {visibleOverlays.map((insight) => (
-            <button
-              key={insight.id}
-              className={`overlay overlay-${insight.anomaly_flag.toLowerCase()} ${selectedInsightId === insight.id ? "active" : ""}`}
-              style={{
-                left: `${insight.bbox_x0 * 100}%`,
-                top: `${insight.bbox_y0 * 100}%`,
-                width: `${Math.max(0.6, (insight.bbox_x1 - insight.bbox_x0) * 100)}%`,
-                height: `${Math.max(0.8, (insight.bbox_y1 - insight.bbox_y0) * 100)}%`,
-              }}
-              onClick={() => onSelectInsight(insight.id)}
-              title={`${insight.clause_type} | Page ${insight.page_number}`}
-            />
-          ))}
+          {visibleOverlays
+            .filter((insight) => insight.id === selectedInsightId)
+            .map((insight) => (
+              <button
+                key={insight.id}
+                className={`overlay overlay-${insight.anomaly_flag.toLowerCase()} active`}
+                style={{
+                  left: `${insight.bbox_x0 * 100}%`,
+                  top: `${insight.bbox_y0 * 100}%`,
+                  width: `${Math.max(0.6, (insight.bbox_x1 - insight.bbox_x0) * 100)}%`,
+                  height: `${Math.max(0.8, (insight.bbox_y1 - insight.bbox_y0) * 100)}%`,
+                }}
+                onClick={() => onSelectInsight(insight.id)}
+                title={`${insight.clause_type} | Page ${insight.page_number}`}
+              />
+            ))}
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-from . import auth, documents, cases, xray
+from . import auth, documents, cases, xray, qa, search
 
 __all__ = [
     "auth",
@@ -7,7 +7,7 @@ __all__ = [
     # "contradictions",
     "documents",
     # "moot",
-    # "qa",
-    # "search",
+    "qa",
+    "search",
     "xray",
 ]

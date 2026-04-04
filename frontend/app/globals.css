@@ -798,27 +798,32 @@ body.sidebar-collapsed .sidebar-brand-block {
   border-radius: 3px;
   min-width: 8px;
   min-height: 10px;
-  border: 1px solid transparent;
-  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid transparent;
+  background: transparent;
+  transition: all 0.2s ease;
 }
 
 .overlay.active {
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4), inset 0 0 0 2px rgba(255, 255, 255, 0.6);
 }
 
-.overlay-high_risk {
-  background: rgba(234, 106, 106, 0.24);
-  border-color: rgba(234, 106, 106, 0.9);
+.overlay-high_risk.active {
+  background: rgba(234, 106, 106, 0.3);
+  border-color: rgba(234, 106, 106, 1);
+  box-shadow: 0 0 12px rgba(234, 106, 106, 0.6), inset 0 0 0 2px rgba(234, 106, 106, 0.8);
 }
 
-.overlay-medium_risk {
-  background: rgba(232, 178, 92, 0.24);
-  border-color: rgba(232, 178, 92, 0.9);
+.overlay-medium_risk.active {
+  background: rgba(232, 178, 92, 0.3);
+  border-color: rgba(232, 178, 92, 1);
+  box-shadow: 0 0 12px rgba(232, 178, 92, 0.6), inset 0 0 0 2px rgba(232, 178, 92, 0.8);
 }
 
-.overlay-standard {
-  background: rgba(115, 184, 137, 0.2);
-  border-color: rgba(115, 184, 137, 0.9);
+.overlay-standard.active {
+  background: rgba(115, 184, 137, 0.3);
+  border-color: rgba(115, 184, 137, 1);
+  box-shadow: 0 0 12px rgba(115, 184, 137, 0.6), inset 0 0 0 2px rgba(115, 184, 137, 0.8);
 }
 
 .xray-canvas-note {

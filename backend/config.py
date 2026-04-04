@@ -63,6 +63,9 @@ class Settings(BaseSettings):
     # Cloudinary
     CLOUDINARY_URL: str = ""
     LOCAL_UPLOAD_DIR: str = str(DATA_DIR / "uploads")
+    
+    # Indian Kanoon
+    INDIAN_KANOON_API_KEY: str = ""
 
     # Document pipeline
     OCR_CONFIDENCE_THRESHOLD: float = 60.0
