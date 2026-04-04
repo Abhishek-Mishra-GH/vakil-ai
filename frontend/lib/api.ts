@@ -1,4 +1,5 @@
-export const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+export const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const TOKEN_KEY = "vakilai_token";
 
 function readToken() {
@@ -16,7 +17,11 @@ export function clearToken() {
   window.localStorage.removeItem(TOKEN_KEY);
 }
 
-export async function apiFetch<T>(path: string, init: RequestInit = {}, auth = true): Promise<T> {
+export async function apiFetch<T>(
+  path: string,
+  init: RequestInit = {},
+  auth = true,
+): Promise<T> {
   const headers = new Headers(init.headers || {});
   const token = readToken();
   if (auth && token) headers.set("Authorization", `Bearer ${token}`);
@@ -35,7 +40,11 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}, auth = t
   return response.json();
 }
 
-export async function apiFetchBlob(path: string, init: RequestInit = {}, auth = true): Promise<Blob> {
+export async function apiFetchBlob(
+  path: string,
+  init: RequestInit = {},
+  auth = true,
+): Promise<Blob> {
   const headers = new Headers(init.headers || {});
   const token = readToken();
   if (auth && token) headers.set("Authorization", `Bearer ${token}`);
@@ -69,7 +78,7 @@ export async function register(payload: {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     },
-    false
+    false,
   );
   setToken(data.access_token);
   return data;
@@ -83,7 +92,7 @@ export async function login(payload: { email: string; password: string }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     },
-    false
+    false,
   );
   setToken(data.access_token);
   return data;
@@ -99,37 +108,38 @@ export async function listCases() {
 }
 
 export async function createCase(payload: CasePayload) {
-  return apiFetch<CaseDetail>(
-    "/api/cases",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    }
-  );
+  return apiFetch<CaseDetail>("/api/cases", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
 }
 
 export async function getCase(caseId: string) {
   return apiFetch<CaseDetail>(`/api/cases/${caseId}`);
 }
 
-export async function updateCase(caseId: string, payload: Partial<CasePayload>) {
-  return apiFetch<CaseDetail>(
-    `/api/cases/${caseId}`,
-    {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    }
-  );
+export async function updateCase(
+  caseId: string,
+  payload: Partial<CasePayload>,
+) {
+  return apiFetch<CaseDetail>(`/api/cases/${caseId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
 }
 
 export async function deleteCase(caseId: string) {
-  return apiFetch<{ status: string }>(`/api/cases/${caseId}`, { method: "DELETE" });
+  return apiFetch<{ status: string }>(`/api/cases/${caseId}`, {
+    method: "DELETE",
+  });
 }
 
 export async function getDocumentSuggestions(caseId: string) {
-  return apiFetch<{ case_id: string; suggestions: DocumentSuggestion[] }>(`/api/cases/${caseId}/document-suggestions`);
+  return apiFetch<{ case_id: string; suggestions: DocumentSuggestion[] }>(
+    `/api/cases/${caseId}/document-suggestions`,
+  );
 }
 
 // Documents
@@ -142,12 +152,14 @@ export async function uploadDocument(caseId: string, file: File) {
     {
       method: "POST",
       body: form,
-    }
+    },
   );
 }
 
 export async function listCaseDocuments(caseId: string) {
-  return apiFetch<{ documents: DocumentInfo[] }>(`/api/cases/${caseId}/documents`);
+  return apiFetch<{ documents: DocumentInfo[] }>(
+    `/api/cases/${caseId}/documents`,
+  );
 }
 
 export async function listDocuments() {
@@ -159,7 +171,9 @@ export async function getDocumentStatus(docId: string) {
 }
 
 export async function deleteDocument(docId: string) {
-  return apiFetch<{ status: string }>(`/api/documents/${docId}`, { method: "DELETE" });
+  return apiFetch<{ status: string }>(`/api/documents/${docId}`, {
+    method: "DELETE",
+  });
 }
 
 export async function getDocumentPdf(docId: string) {
@@ -171,15 +185,15 @@ export async function getInsights(docId: string) {
   return apiFetch<XRayInsights>(`/api/xray/${docId}/insights`);
 }
 
-export async function createQaSession(payload: { case_id: string; document_id: string }) {
-  return apiFetch<{ session_id: string }>(
-    "/api/qa/sessions",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    }
-  );
+export async function createQaSession(payload: {
+  case_id: string;
+  document_id: string;
+}) {
+  return apiFetch<{ session_id: string }>("/api/qa/sessions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
 }
 
 export async function askQaSession(sessionId: string, question: string) {
@@ -187,18 +201,17 @@ export async function askQaSession(sessionId: string, question: string) {
     answer: string;
     cannot_determine: boolean;
     retrieved_chunks: RetrievedChunk[];
-  }>(
-    `/api/qa/sessions/${sessionId}/ask`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question }),
-    }
-  );
+  }>(`/api/qa/sessions/${sessionId}/ask`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question }),
+  });
 }
 
 export async function getQaMessages(sessionId: string) {
-  return apiFetch<{ session_id: string; messages: QaMessage[] }>(`/api/qa/sessions/${sessionId}/messages`);
+  return apiFetch<{ session_id: string; messages: QaMessage[] }>(
+    `/api/qa/sessions/${sessionId}/messages`,
+  );
 }
 
 // Contradictions
@@ -217,7 +230,7 @@ export async function rerunContradictions(caseId: string) {
     `/api/cases/${caseId}/contradictions/rerun`,
     {
       method: "POST",
-    }
+    },
   );
 }
 
@@ -231,7 +244,7 @@ export async function generateBrief(caseId: string) {
     `/api/cases/${caseId}/brief/generate`,
     {
       method: "POST",
-    }
+    },
   );
 }
 
@@ -243,7 +256,7 @@ export async function createMootSession(caseId: string) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ case_id: caseId }),
-    }
+    },
   );
 }
 
@@ -255,34 +268,37 @@ export async function argueMootSession(sessionId: string, argument: string) {
     session_active: boolean;
     weak_point_hit: boolean;
     argument_feedback?: string;
-  }>(
-    `/api/moot/sessions/${sessionId}/argue`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ argument }),
-    }
-  );
+  }>(`/api/moot/sessions/${sessionId}/argue`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ argument }),
+  });
 }
 
-export async function argueMootSessionWithFeedback(sessionId: string, argument: string, includeFeedback: boolean = true) {
+export async function argueMootSessionWithFeedback(
+  sessionId: string,
+  argument: string,
+  includeFeedback: boolean = true,
+) {
   return apiFetch<{
     response: string;
     exchange_count: number;
     session_active: boolean;
     weak_point_hit: boolean;
     argument_feedback?: string;
-  }>(
-    `/api/moot/sessions/${sessionId}/argue`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ argument, include_feedback: includeFeedback }),
-    }
-  );
+  }>(`/api/moot/sessions/${sessionId}/argue`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ argument, include_feedback: includeFeedback }),
+  });
 }
 
-export async function argueMootSessionFromAudio(sessionId: string, audioBlob: Blob, includeTts: boolean = false, includeFeedback: boolean = true) {
+export async function argueMootSessionFromAudio(
+  sessionId: string,
+  audioBlob: Blob,
+  includeTts: boolean = false,
+  includeFeedback: boolean = true,
+) {
   const form = new FormData();
   form.append("file", audioBlob, "argument.webm");
   form.append("include_tts", includeTts ? "true" : "false");
@@ -309,7 +325,7 @@ export async function endMootSession(sessionId: string) {
     `/api/moot/sessions/${sessionId}/end`,
     {
       method: "POST",
-    }
+    },
   );
 }
 
@@ -335,19 +351,26 @@ export async function mootTextToSpeech(text: string) {
 }
 
 // Search
-export async function hybridSearch(payload: { query: string; case_id: string; document_id?: string; top_k?: number }) {
+export async function hybridSearch(payload: {
+  query: string;
+  case_id: string;
+  document_id?: string;
+  top_k?: number;
+}) {
   return apiFetch<{ query: string; results: RetrievedChunk[] }>(
     "/api/search/hybrid",
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
-    }
+    },
   );
 }
 
 export async function searchStatutes(query: string) {
-  return apiFetch<{ query: string; results: Statute[] }>(`/api/search/statutes?query=${encodeURIComponent(query)}`);
+  return apiFetch<{ query: string; results: Statute[] }>(
+    `/api/search/statutes?query=${encodeURIComponent(query)}`,
+  );
 }
 
 // Types
@@ -519,11 +542,27 @@ export interface Brief {
   documents_used: string[];
   core_contention: string;
   timeline: Array<{ date: string; event: string; source: string }>;
-  offensive_arguments: Array<{ argument: string; strength: string; basis: string; source: string }>;
-  defensive_arguments: Array<{ anticipated_attack: string; counter: string; source: string }>;
+  offensive_arguments: Array<{
+    argument: string;
+    strength: string;
+    basis: string;
+    source: string;
+  }>;
+  defensive_arguments: Array<{
+    anticipated_attack: string;
+    counter: string;
+    source: string;
+  }>;
   weak_points: Array<{ issue: string; severity: string; source: string }>;
   key_legal_issues: string[];
-  precedents: Array<{ title: string; court: string; year: string; relevance_to: string; url: string; headline: string }>;
+  precedents: Array<{
+    title: string;
+    court: string;
+    year: string;
+    relevance_to: string;
+    url: string;
+    headline: string;
+  }>;
 }
 
 export interface MootMessage {
@@ -547,9 +586,12 @@ export interface PrecedentResult {
   headline: string;
 }
 
-export async function searchPrecedents(query: string, limit: number = 3): Promise<PrecedentResult[]> {
+export async function searchPrecedents(
+  query: string,
+  limit: number = 3,
+): Promise<PrecedentResult[]> {
   const data = await apiFetch<{ query: string; results: PrecedentResult[] }>(
-    `/api/search/precedents?query=${encodeURIComponent(query)}&limit=${limit}`
+    `/api/search/precedents?query=${encodeURIComponent(query)}&limit=${limit}`,
   );
   return data.results || [];
 }
