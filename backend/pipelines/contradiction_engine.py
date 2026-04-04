@@ -6,6 +6,7 @@ import time
 import asyncio
 from itertools import combinations
 from typing import Any, List, Dict
+import re
 
 from config import settings
 from database import get_db_connection, release_db_connection
@@ -276,21 +277,41 @@ def _filter_contradictions(items: List[Dict]) -> List[Dict]:
 # =========================
 # DEDUP
 # =========================
+def _normalize_text(t: str) -> str:
+    if not t:
+        return ""
+
+    t = t.lower()
+
+    # remove extra spaces
+    t = re.sub(r"\s+", " ", t)
+
+    # remove punctuation
+    t = re.sub(r"[^\w\s₹]", "", t)
+
+    return t.strip()
+
+
 def _deduplicate(items: List[Dict]) -> List[Dict]:
     seen = set()
     final = []
 
     for i in items:
-        key = (
-            i.get("claim_a", "")[:150],
-            i.get("claim_b", "")[:150],
-            i.get("type", "")
-        )
+        ca = _normalize_text(i.get("claim_a", ""))
+        cb = _normalize_text(i.get("claim_b", ""))
+        typ = i.get("type", "")
 
-        if key in seen:
+        if not ca or not cb:
             continue
 
-        seen.add(key)
+        # 🔥 ORDER-INVARIANT KEY (A↔B same)
+        key1 = (ca[:150], cb[:150], typ)
+        key2 = (cb[:150], ca[:150], typ)
+
+        if key1 in seen or key2 in seen:
+            continue
+
+        seen.add(key1)
         final.append(i)
 
     return final
