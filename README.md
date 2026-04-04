@@ -1,0 +1,93 @@
+# Vakil AI - Intelligent Legal Research Platform
+
+## Introduction
+
+Vakil AI is a comprehensive legal technology platform that empowers legal professionals with AI-driven document analysis, case management, and legal research capabilities. The application combines advanced NLP, machine learning embeddings, and cloud services to streamline legal workflows and enhance case preparation efficiency.
+
+---
+
+## Technologies Used
+
+| Category | Technology Stack |
+|----------|------------------|
+| **Frontend** | Next.js, React, TypeScript |
+| **Backend** | Python, FastAPI |
+| **Database** | PostgreSQL, SQL |
+| **Document Processing** | AWS Textract, Vector Embeddings, Chunking |
+| **AI/ML Services** | OpenAI Integration, Embedding Models |
+| **Cloud Services** | Vultr (VPS), Cloudinary, ElevenLabs, Indian Kanoon API |
+| **Other/Tools** | pnpm, uv/venv, Git/Github |
+
+---
+
+## Key Features
+
+- **Document Analysis (X-Ray):** Advanced PDF and document scanning with AI-powered insights
+- **Brief Generation:** Automatic creation of hearing briefs from case documents
+- **Contradiction Detection:** Machine learning-based identification of case inconsistencies
+- **Legal Search:** Full-text search across statute database and uploaded documents
+- **Speech Synthesis:** Audio generation for briefs via ElevenLabs integration
+- **Multi-User Authentication:** Secure login and role-based access control
+- **Case Management:** Organize, categorize, and manage multiple legal cases
+- **File Management:** Cloudinary integration for secure document storage
+
+---
+
+## Project Folder Structure
+
+```
+vakil-ai/
+├── backend/
+│   ├── routers/          (API endpoints)
+│   ├── services/         (Business logic)
+│   ├── pipelines/        (Data processing)
+│   ├── database/         (DB connection & schema)
+│   ├── data/             (Statutes & uploads)
+│   └── main.py           (FastAPI application)
+├── frontend/
+│   ├── app/              (Next.js pages & layouts)
+│   ├── components/       (React components)
+│   ├── lib/              (API client & utilities)
+│   └── package.json      (Dependencies)
+└── README.md
+```
+
+
+
+## Prerequisites & Installation
+
+### Requirements
+- Python 3.10+ (uv)
+- Node.js 18+ (pnpm/npm)
+- PostgreSQL 13+
+
+### Backend Setup
+
+```bash
+cd backend
+cp .env.local .env
+uv sync
+uv run uvicorn main:app --reload --port 8000
+```
+
+### Frontend Setup
+
+```bash
+cd frontend
+pnpm install
+cp .env.local .env
+pnpm dev
+```
+
+
+Access the application at **http://localhost:3000**
+
+---
+
+## API Documentation
+
+Backend API documentation available at: **http://localhost:8000/docs**
+
+---
+
+

@@ -1805,7 +1805,7 @@ body.sidebar-collapsed .sidebar-brand-block {
 }
 
 .white-theme button {
-  color: inherit;
+  color: white;
 }
 
 /* White theme background and layout fixes */
