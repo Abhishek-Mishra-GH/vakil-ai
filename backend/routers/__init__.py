@@ -1,8 +1,8 @@
-from . import auth, documents, cases, xray, qa, search
+from . import auth, documents, cases, xray, qa, search, brief
 
 __all__ = [
     "auth",
-    # "brief",
+    "brief",
     "cases",
     # "contradictions",
     "documents",

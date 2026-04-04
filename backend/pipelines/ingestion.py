@@ -53,6 +53,11 @@ async def run_ingestion_pipeline(
         await _set_status(conn, doc_id, "ocr_running")
         ocr_start = perf_counter()
         textract_response = await asyncio.to_thread(run_textract, pdf_bytes)
+        
+        if textract_response is None:
+            await _fail(conn, doc_id, "OCR failed: No valid response from any OCR method")
+            return
+        
         ocr_source = str(textract_response.get("_source", "textract"))
 
         line_blocks = [block for block in textract_response.get("Blocks", []) if block.get("BlockType") == "LINE"]

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   CasePayload,
   CaseSummary,
@@ -44,15 +44,22 @@ function toIsoUtc(localDateTime: string | undefined) {
 
 // ✅ Status badge with live pulse animation
 function StatusBadge({ status }: { status: string }) {
-  const config: Record<string, { label: string; color: string; animate: boolean }> = {
-    uploaded:    { label: "Uploaded",    color: "#888",    animate: false },
-    ocr_running: { label: "OCR Running", color: "#f5a623", animate: true  },
-    analyzing:   { label: "Analyzing",   color: "#4a90e2", animate: true  },
-    ready:       { label: "Ready",        color: "#27ae60", animate: false },
-    failed:      { label: "Failed",       color: "#e74c3c", animate: false },
+  const config: Record<
+    string,
+    { label: string; color: string; animate: boolean }
+  > = {
+    uploaded: { label: "Uploaded", color: "#888", animate: false },
+    ocr_running: { label: "OCR Running", color: "#f5a623", animate: true },
+    analyzing: { label: "Analyzing", color: "#4a90e2", animate: true },
+    ready: { label: "Ready", color: "#27ae60", animate: false },
+    failed: { label: "Failed", color: "#e74c3c", animate: false },
   };
 
-  const cfg = config[status] ?? { label: status, color: "#888", animate: false };
+  const cfg = config[status] ?? {
+    label: status,
+    color: "#888",
+    animate: false,
+  };
 
   return (
     <span
@@ -60,7 +67,9 @@ function StatusBadge({ status }: { status: string }) {
         color: cfg.color,
         fontWeight: 600,
         display: "inline-block",
-        animation: cfg.animate ? "vakil-pulse 1.2s ease-in-out infinite" : "none",
+        animation: cfg.animate
+          ? "vakil-pulse 1.2s ease-in-out infinite"
+          : "none",
       }}
     >
       {cfg.label}
@@ -90,14 +99,20 @@ export default function DashboardPage() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [briefSummary, setBriefSummary] = useState("");
-  const [docSuggestions, setDocSuggestions] = useState<DocumentSuggestion[]>([]);
+  const [docSuggestions, setDocSuggestions] = useState<DocumentSuggestion[]>(
+    [],
+  );
 
   // ✅ This triggers a fresh polling cycle whenever a new upload happens
   const [pollingTrigger, setPollingTrigger] = useState(0);
 
+  // ✅ Track uploading file for UI feedback
+  const [uploadingFileName, setUploadingFileName] = useState<string>("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const selectedCase = useMemo(
     () => cases.find((item) => item.id === selectedCaseId) || null,
-    [cases, selectedCaseId]
+    [cases, selectedCaseId],
   );
 
   useEffect(() => {
@@ -113,7 +128,9 @@ export default function DashboardPage() {
       }
     };
     bootstrap();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const refreshCases = useCallback(async () => {
@@ -165,7 +182,7 @@ export default function DashboardPage() {
       const stillProcessing = data.documents.some(
         (doc) =>
           doc.processing_status !== "ready" &&
-          doc.processing_status !== "failed"
+          doc.processing_status !== "failed",
       );
 
       // Stop polling only when everything is done
@@ -182,7 +199,9 @@ export default function DashboardPage() {
 
   async function handleDeleteDocument(docId: string) {
     if (!selectedCaseId) return;
-    const confirmDelete = window.confirm("Are you sure you want to delete this document?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this document?",
+    );
     if (!confirmDelete) return;
     setBusy(true);
     setMessage("");
@@ -215,7 +234,9 @@ export default function DashboardPage() {
         setUserName(res.user.full_name);
       }
     } catch (error) {
-      setAuthError(error instanceof Error ? error.message : "Authentication failed");
+      setAuthError(
+        error instanceof Error ? error.message : "Authentication failed",
+      );
     } finally {
       setBusy(false);
     }
@@ -238,7 +259,9 @@ export default function DashboardPage() {
       await refreshCases();
       setMessage("Case created.");
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Could not create case");
+      setMessage(
+        error instanceof Error ? error.message : "Could not create case",
+      );
     } finally {
       setBusy(false);
     }
@@ -248,6 +271,7 @@ export default function DashboardPage() {
     if (!selectedCaseId) return;
     setBusy(true);
     setMessage("");
+    setUploadingFileName(file.name);
     try {
       await uploadDocument(selectedCaseId, file);
       setMessage("Document uploaded and queued for processing.");
@@ -258,6 +282,11 @@ export default function DashboardPage() {
       setMessage(error instanceof Error ? error.message : "Upload failed");
     } finally {
       setBusy(false);
+      setUploadingFileName("");
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   }
 
@@ -268,9 +297,15 @@ export default function DashboardPage() {
     try {
       await generateBrief(selectedCaseId);
       setMessage("Brief generation started.");
-      setTimeout(() => { void handleLoadBrief(); }, 1200);
+      setTimeout(() => {
+        void handleLoadBrief();
+      }, 1200);
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Could not start brief generation");
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : "Could not start brief generation",
+      );
     } finally {
       setBusy(false);
     }
@@ -317,7 +352,11 @@ export default function DashboardPage() {
           <h1>VakilAI Access</h1>
           <p>Sign in to open your isolated case vault.</p>
         </div>
-        <form className="card" style={{ maxWidth: 520 }} onSubmit={handleAuthSubmit}>
+        <form
+          className="card"
+          style={{ maxWidth: 520 }}
+          onSubmit={handleAuthSubmit}
+        >
           <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
             <button
               type="button"
@@ -336,7 +375,13 @@ export default function DashboardPage() {
           </div>
 
           <label className="field-label">Email</label>
-          <input className="field-input" value={email} onChange={(e) => setEmail(e.target.value)} type="email" required />
+          <input
+            className="field-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            required
+          />
 
           <label className="field-label">Password</label>
           <input
@@ -351,15 +396,38 @@ export default function DashboardPage() {
           {authMode === "register" && (
             <>
               <label className="field-label">Full name</label>
-              <input className="field-input" value={fullName} onChange={(e) => setFullName(e.target.value)} type="text" required />
+              <input
+                className="field-input"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                type="text"
+                required
+              />
             </>
           )}
 
           {authError ? (
-            <p style={{ color: "var(--risk-high)", marginTop: 10, fontSize: "0.85rem" }}>{authError}</p>
+            <p
+              style={{
+                color: "var(--risk-high)",
+                marginTop: 10,
+                fontSize: "0.85rem",
+              }}
+            >
+              {authError}
+            </p>
           ) : null}
-          <button type="submit" className="btn btn-primary" style={{ marginTop: 16 }} disabled={busy}>
-            {busy ? "Please wait..." : authMode === "login" ? "Sign In" : "Create Account"}
+          <button
+            type="submit"
+            className="btn btn-primary"
+            style={{ marginTop: 16 }}
+            disabled={busy}
+          >
+            {busy
+              ? "Please wait..."
+              : authMode === "login"
+                ? "Sign In"
+                : "Create Account"}
           </button>
         </form>
       </div>
@@ -367,7 +435,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div>
+    <div className="white-theme">
       <div className="page-header">
         <h1>Case Dashboard</h1>
         <p>{userName} | Cases sorted by next hearing date</p>
@@ -386,7 +454,9 @@ export default function DashboardPage() {
             <input
               className="field-input"
               value={caseForm.title || ""}
-              onChange={(e) => setCaseForm((prev) => ({ ...prev, title: e.target.value }))}
+              onChange={(e) =>
+                setCaseForm((prev) => ({ ...prev, title: e.target.value }))
+              }
               required
             />
 
@@ -394,14 +464,21 @@ export default function DashboardPage() {
             <input
               className="field-input"
               value={caseForm.case_number || ""}
-              onChange={(e) => setCaseForm((prev) => ({ ...prev, case_number: e.target.value }))}
+              onChange={(e) =>
+                setCaseForm((prev) => ({
+                  ...prev,
+                  case_number: e.target.value,
+                }))
+              }
             />
 
             <label className="field-label">Court name</label>
             <input
               className="field-input"
               value={caseForm.court_name || ""}
-              onChange={(e) => setCaseForm((prev) => ({ ...prev, court_name: e.target.value }))}
+              onChange={(e) =>
+                setCaseForm((prev) => ({ ...prev, court_name: e.target.value }))
+              }
             />
 
             <label className="field-label">Next hearing date &amp; time</label>
@@ -410,13 +487,23 @@ export default function DashboardPage() {
               type="datetime-local"
               step={60}
               value={caseForm.hearing_date || ""}
-              onChange={(e) => setCaseForm((prev) => ({ ...prev, hearing_date: e.target.value }))}
+              onChange={(e) =>
+                setCaseForm((prev) => ({
+                  ...prev,
+                  hearing_date: e.target.value,
+                }))
+              }
             />
             <p className="muted" style={{ marginTop: 6 }}>
               Saved in UTC timezone automatically.
             </p>
 
-            <button type="submit" className="btn btn-primary" style={{ marginTop: 16 }} disabled={busy}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              style={{ marginTop: 16 }}
+              disabled={busy}
+            >
               Create case
             </button>
           </form>
@@ -436,10 +523,14 @@ export default function DashboardPage() {
                 >
                   <div className="list-item-title">{item.title}</div>
                   <div className="list-item-meta">
-                    {item.hearing_date ? new Date(item.hearing_date).toLocaleString() : "No hearing date"}
+                    {item.hearing_date
+                      ? new Date(item.hearing_date).toLocaleString()
+                      : "No hearing date"}
                   </div>
                   <div className="list-item-meta">
-                    Docs {item.document_count} | Ready {item.ready_document_count} | Contradictions {item.contradiction_count}
+                    Docs {item.document_count} | Ready{" "}
+                    {item.ready_document_count} | Contradictions{" "}
+                    {item.contradiction_count}
                   </div>
                 </button>
               ))
@@ -455,34 +546,84 @@ export default function DashboardPage() {
             <div className="upload-area" style={{ padding: "24px" }}>
               <p>Upload PDF to &ldquo;{selectedCase.title}&rdquo;</p>
               <input
+                ref={fileInputRef}
                 type="file"
                 accept=".pdf,application/pdf"
                 onChange={(event) => {
                   const file = event.target.files?.[0];
                   if (file) void handleUpload(file);
                 }}
+                disabled={busy}
               />
             </div>
 
             <div className="list-stack" style={{ marginTop: 14 }}>
-              {documents.length === 0 ? (
-                <p className="muted">No documents uploaded for this case yet.</p>
+              {uploadingFileName && (
+                <div
+                  key="uploading"
+                  className="list-item static uploading-placeholder"
+                >
+                  <div className="list-item-title">{uploadingFileName}</div>
+                  <div
+                    className="list-item-meta"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    <span
+                      style={{ animation: "pulse 1.5s ease-in-out infinite" }}
+                    >
+                      ●{" "}
+                    </span>
+                    <span>Uploading and processing...</span>
+                  </div>
+                  <style>{`
+                    @keyframes pulse {
+                      0%, 100% { opacity: 0.6; }
+                      50% { opacity: 1; }
+                    }
+                  `}</style>
+                </div>
+              )}
+              {documents.length === 0 && !uploadingFileName ? (
+                <p className="muted">
+                  No documents uploaded for this case yet.
+                </p>
               ) : (
                 documents.map((doc) => (
                   <div key={doc.id} className="list-item static">
-                    <div className="list-item-title">{doc.original_filename}</div>
+                    <div className="list-item-title">
+                      {doc.original_filename}
+                    </div>
                     <div className="list-item-meta">
                       {/* ✅ Live animated status badge */}
                       <StatusBadge status={doc.processing_status} />
-                      {" | "}Pages: {doc.page_count ?? "?"} | Clauses: {doc.clause_count}
+                      {" | "}Pages: {doc.page_count ?? "?"} | Clauses:{" "}
+                      {doc.clause_count}
                     </div>
-                    {doc.processing_status === "failed" && doc.processing_error ? (
-                      <div className="list-item-meta" style={{ color: "var(--risk-high)" }}>
+                    {doc.processing_status === "failed" &&
+                    doc.processing_error ? (
+                      <div
+                        className="list-item-meta"
+                        style={{ color: "var(--risk-high)" }}
+                      >
                         Failure reason: {doc.processing_error}
                       </div>
                     ) : null}
-                    <div style={{ display: "flex", gap: 10, marginTop: 8, flexWrap: "wrap" }}>
-                      <Link className="btn btn-secondary" href={`/xray?case=${selectedCase.id}&doc=${doc.id}`}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 10,
+                        marginTop: 8,
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <Link
+                        className="btn btn-secondary"
+                        href={`/xray?case=${selectedCase.id}&doc=${doc.id}`}
+                      >
                         Open X-Ray
                       </Link>
                       {/* <Link className="btn btn-secondary" href={`/hearing-brief?case=${selectedCase.id}`}>
@@ -496,9 +637,11 @@ export default function DashboardPage() {
                       </Link> */}
                       <button
                         className="btn btn-secondary"
-                        style={{ borderColor: "rgba(234,106,106,0.45)",
+                        style={{
+                          borderColor: "rgba(234,106,106,0.45)",
                           background: "rgba(234,106,106,0.1)",
-                          color: "var(--risk-high)" }}
+                          color: "var(--risk-high)",
+                        }}
                         onClick={() => handleDeleteDocument(doc.id)}
                         disabled={busy}
                       >
@@ -513,9 +656,13 @@ export default function DashboardPage() {
         ) : (
           <p className="muted">Select a case to manage documents.</p>
         )}
-        {message ? <p style={{ marginTop: 12, color: "var(--text-secondary)" }}>{message}</p> : null}
+        {message ? (
+          <p style={{ marginTop: 12, color: "var(--text-secondary)" }}>
+            {message}
+          </p>
+        ) : null}
       </section>
-{/* 
+      {/* 
       <section className="card" style={{ marginTop: 20 }}>
         <h2 className="section-title">Pre-Flight Brief</h2>
         {selectedCase ? (

@@ -1600,6 +1600,221 @@ body.sidebar-collapsed .sidebar-brand-block {
   }
 }
 
+/* ===== WHITE THEME ===== */
+.white-theme {
+  --bg: #ffffff;
+  --bg-soft: #f8f9fb;
+  --panel: #f5f7fa;
+  --panel-elevated: #e8eef5;
+  --line: rgba(51, 65, 85, 0.15);
+  --line-strong: rgba(51, 65, 85, 0.3);
+  --text: #1a1f35;
+  --text-soft: #475569;
+  --text-muted: #64748b;
+  --gold: #1a3a88;
+  --gold-soft: rgba(26, 58, 136, 0.08);
+  --text-secondary: #64748b;
+}
+
+.white-theme {
+  color: #1a1f35;
+}
+
+.white-theme .page-header h1 {
+  color: #1a1f35;
+}
+
+.white-theme .page-header p {
+  color: #475569;
+}
+
+.white-theme .card {
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fb 100%);
+  border: 1px solid rgba(51, 65, 85, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  color: #1a1f35;
+}
+
+.white-theme .section-title {
+  color: #475569;
+}
+
+.white-theme .muted {
+  color: #64748b;
+}
+
+.white-theme .field-label {
+  color: #1a1f35;
+}
+
+.white-theme .field-input {
+  background: white;
+  color: #1a1f35;
+  border: 1px solid rgba(51, 65, 85, 0.2);
+}
+
+.white-theme .field-input::placeholder {
+  color: #94a3b8;
+}
+
+.white-theme .btn-secondary {
+  border-color: rgba(51, 65, 85, 0.2);
+  background: rgba(51, 65, 85, 0.05);
+  color: #1a3a88;
+}
+
+.white-theme .btn-secondary:hover {
+  border-color: rgba(51, 65, 85, 0.3);
+  background: rgba(51, 65, 85, 0.1);
+}
+
+.white-theme .upload-area {
+  background: #f8f9fb;
+  border: 1px dashed rgba(51, 65, 85, 0.2);
+  color: #1a1f35;
+}
+
+.white-theme .list-item {
+  background: #f5f7fa;
+  border: 1px solid rgba(51, 65, 85, 0.1);
+  color: #1a1f35;
+}
+
+.white-theme .list-item-title {
+  color: #1a1f35;
+  font-weight: 600;
+}
+
+.white-theme .list-item-meta {
+  color: #475569;
+}
+
+.white-theme .list-item.static:hover {
+  background: #eef2f7;
+  border-color: rgba(51, 65, 85, 0.2);
+}
+
+.white-theme .uploading-placeholder {
+  background: #eef2f7;
+  border: 1px solid #1a3a88;
+}
+
+.white-theme.app-sidebar {
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fb 100%);
+  border-right: 1px solid rgba(51, 65, 85, 0.15);
+}
+
+.white-theme .sidebar-brand-main {
+  color: #1a3a88;
+}
+
+.white-theme .sidebar-brand-sub {
+  color: #64748b;
+}
+
+.white-theme .sidebar-link {
+  color: #475569;
+}
+
+.white-theme .sidebar-link:hover {
+  background: rgba(26, 58, 136, 0.05);
+  color: #1a3a88;
+}
+
+.white-theme .sidebar-link.active {
+  color: #1a3a88;
+  background: rgba(26, 58, 136, 0.1);
+}
+
+.white-theme .sidebar-link.active::before {
+  background: #1a3a88;
+}
+
+.white-theme .sidebar-cta {
+  background: linear-gradient(135deg, #1a3a88 0%, #2d5aa8 100%);
+  color: white;
+}
+
+.white-theme .sidebar-cta-wrap {
+  border-top: 1px solid rgba(51, 65, 85, 0.1);
+}
+
+.white-theme .brief-shell {
+  background: white;
+  color: #1a1f35;
+}
+
+.white-theme .app-content {
+  background: white;
+}
+
+.white-theme .app-main {
+  background: white;
+  color: #1a1f35;
+}
+
+.white-theme .brief-hero {
+  border: 1px solid rgba(51, 65, 85, 0.2);
+  border-left: 3px solid #1a3a88;
+  background: linear-gradient(180deg, #f8f9fb 0%, #eef2f7 100%);
+  color: #1a1f35;
+}
+
+.white-theme .brief-hero h2 {
+  color: #1a1f35;
+}
+
+.white-theme .brief-hero p {
+  color: #475569;
+}
+
+.white-theme .pillar-card {
+  background: white;
+  border: 1px solid rgba(51, 65, 85, 0.1);
+  color: #1a1f35;
+}
+
+.white-theme .pillar-card h3 {
+  color: #1a3a88;
+}
+
+.white-theme .pillar-card p {
+  color: #475569;
+}
+
+.white-theme .stat-box {
+  background: #f5f7fa;
+  border: 1px solid rgba(51, 65, 85, 0.1);
+  color: #1a1f35;
+}
+
+.white-theme input::placeholder {
+  color: #94a3b8;
+}
+
+.white-theme button {
+  color: inherit;
+}
+
+/* White theme background and layout fixes */
+body:has(.white-theme) {
+  background: white !important;
+}
+
+.white-theme,
+.white-theme .app-shell,
+.white-theme .app-content,
+.white-theme .app-main,
+.white-theme .brief-shell {
+  background: white !important;
+  color: #1a1f35;
+}
+
+html:has(.white-theme) {
+  background: white;
+  color: #1a1f35;
+}
+
 @media print {
   * {
     -webkit-print-color-adjust: exact;

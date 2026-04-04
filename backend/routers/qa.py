@@ -44,7 +44,7 @@ class AskRequest(BaseModel):
 
 
 @router.post("/sessions", status_code=201)
-async def create_session(payload: CreateSessionRequest, db=Depends(get_db), current_user=Depends(get_current_user)):
+async def create_session(payload: CreateSessionRequest, db=Depends(get_db), current_user=Depends(get_current_user)): # type: ignore
     document = await db.fetchrow(
         """
         SELECT id
@@ -77,7 +77,7 @@ async def ask_question(
     session_id: str,
     payload: AskRequest,
     db=Depends(get_db),
-    current_user=Depends(get_current_user),
+    current_user=Depends(get_current_user), # type: ignore
 ):
     session = await db.fetchrow(
         """
@@ -148,7 +148,7 @@ async def ask_question(
 
 
 @router.get("/sessions/{session_id}/messages")
-async def get_messages(session_id: str, db=Depends(get_db), current_user=Depends(get_current_user)):
+async def get_messages(session_id: str, db=Depends(get_db), current_user=Depends(get_current_user)): # type: ignore
     session = await db.fetchrow("SELECT id FROM qa_sessions WHERE id=$1 AND user_id=$2", session_id, current_user["id"])
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")

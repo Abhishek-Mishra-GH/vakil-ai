@@ -53,11 +53,11 @@ def run_textract(pdf_bytes: bytes) -> dict[str, Any]:
     if fallback_pages:
         logger.warning("OCR fallback source=pypdf pages=%s", len(fallback_pages))
         return {"Blocks": _pages_to_blocks(fallback_pages), "_source": "pypdf_fallback"}
+    
+    # If all methods fail, return empty blocks (prevents NoneType errors)
+    logger.error("All OCR methods failed for document; returning empty blocks")
+    return {"Blocks": [], "_source": "none"}
 
-    raise RuntimeError(
-        "OCR failed. Check AWS Textract credentials/permissions or install pdf2image+poppler. "
-        "For text PDFs, install pypdf as fallback."
-    )
 
 
 def run_textract_multipage(pdf_bytes: bytes) -> list[dict[str, Any]]:

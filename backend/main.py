@@ -8,8 +8,8 @@ from fastapi.responses import JSONResponse
 from config import BACKEND_DIR, REPO_ROOT, settings
 from database import close_pool, create_pool
 
-from routers import auth, documents, xray, cases, qa, search
-# from routers import brief, contradictions, moot
+from routers import auth, documents, xray, cases, qa, search, brief
+# from routers import contradictions, moot
 
 
 @asynccontextmanager
@@ -42,7 +42,7 @@ app.include_router(search.router)
 app.include_router(xray.router)
 app.include_router(qa.router)
 # app.include_router(contradictions.router)
-# app.include_router(brief.router)
+app.include_router(brief.router)
 # app.include_router(moot.router)
 
 
