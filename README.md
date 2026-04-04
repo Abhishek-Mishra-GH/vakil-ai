@@ -90,4 +90,8 @@ Backend API documentation available at: **http://localhost:8000/docs**
 
 ---
 
+## Architecture Diagram
 
+VakilAI Architecture Diagram available at: **https://drive.google.com/file/d/1trKacQyVeSLT2Gt3QIP4DzjSiLFC3Kfo/view?usp=sharing**
+
+---
