@@ -27,6 +27,30 @@ def _get_client():
     return groq.AsyncGroq(api_key=settings.GROQ_API_KEY)
 
 
+def _coerce_json_object(value):
+    """Normalize asyncpg JSON/JSONB values to Python objects.
+
+    asyncpg may return JSONB columns as strings depending on configuration.
+    For API responses we want consistent JSON objects (dict/list) or None.
+    """
+
+    if value is None:
+        return None
+    if isinstance(value, (dict, list)):
+        return value
+    if isinstance(value, str):
+        text = value.strip()
+        if not text:
+            return None
+        if text.startswith("{") or text.startswith("["):
+            try:
+                return json.loads(text)
+            except Exception:
+                return None
+        return None
+    return value
+
+
 class CreateSessionRequest(BaseModel):
     case_id: str
 
@@ -187,6 +211,116 @@ async def create_session(payload: CreateSessionRequest, db=Depends(get_db), curr
         current_user["id"],
     )
     return {"session_id": session_id, "status": "active", "case_title": case["title"]}
+
+
+@router.get("/cases/{case_id}/sessions/history")
+async def get_case_sessions_history(case_id: str, db=Depends(get_db), current_user=Depends(get_current_user)):
+    case = await db.fetchrow(
+        "SELECT id, title FROM cases WHERE id=$1 AND user_id=$2",
+        case_id,
+        current_user["id"],
+    )
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+
+    session_rows = await db.fetch(
+        """
+        SELECT id, case_id, status, exchange_count, summary, started_at, ended_at
+        FROM moot_sessions
+        WHERE case_id=$1 AND user_id=$2
+        ORDER BY started_at DESC
+        """,
+        case_id,
+        current_user["id"],
+    )
+
+    session_ids = [row["id"] for row in session_rows]
+    messages_by_session: dict[str, list[dict]] = {str(session_id): [] for session_id in session_ids}
+
+    if session_ids:
+        message_rows = await db.fetch(
+            """
+            SELECT session_id, role, content, weak_point_hit, created_at
+            FROM moot_messages
+            WHERE session_id = ANY($1::uuid[])
+            ORDER BY session_id, created_at ASC
+            """,
+            session_ids,
+        )
+        for row in message_rows:
+            sid = str(row["session_id"])
+            messages_by_session.setdefault(sid, []).append(
+                {
+                    "role": row["role"],
+                    "content": row["content"],
+                    "weak_point_hit": row["weak_point_hit"],
+                    "created_at": row["created_at"],
+                }
+            )
+
+    sessions: list[dict] = []
+    for session in session_rows:
+        sid = str(session["id"])
+        sessions.append(
+            {
+                "session_id": sid,
+                "case_id": str(session["case_id"]),
+                "status": session["status"],
+                "exchange_count": session["exchange_count"],
+                "started_at": session["started_at"],
+                "ended_at": session["ended_at"],
+                "summary": _coerce_json_object(session["summary"]),
+                "messages": messages_by_session.get(sid, []),
+            }
+        )
+
+    return {"case_id": str(case["id"]), "case_title": case["title"], "sessions": sessions}
+
+
+@router.get("/sessions/{session_id}/history")
+async def get_session_history(session_id: str, db=Depends(get_db), current_user=Depends(get_current_user)):
+    session = await db.fetchrow(
+        """
+        SELECT
+            s.id,
+            s.case_id,
+            s.status,
+            s.exchange_count,
+            s.summary,
+            s.started_at,
+            s.ended_at,
+            c.title AS case_title
+        FROM moot_sessions s
+        JOIN cases c ON c.id = s.case_id
+        WHERE s.id=$1 AND s.user_id=$2
+        """,
+        session_id,
+        current_user["id"],
+    )
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    rows = await db.fetch(
+        """
+        SELECT role, content, weak_point_hit, created_at
+        FROM moot_messages
+        WHERE session_id=$1
+        ORDER BY created_at ASC
+        """,
+        session_id,
+    )
+
+    return {
+        "session_id": str(session["id"]),
+        "case_id": str(session["case_id"]),
+        "case_title": session["case_title"],
+        "status": session["status"],
+        "exchange_count": session["exchange_count"],
+        "started_at": session["started_at"],
+        "ended_at": session["ended_at"],
+        "summary": _coerce_json_object(session["summary"]),
+        "messages": [dict(row) for row in rows],
+    }
 
 
 @router.post("/tts")

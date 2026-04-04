@@ -5,19 +5,27 @@ import {
   CaseSummary,
   MootMessage,
   MootSummary,
+  MootSessionHistoryItem,
   argueMootSessionFromAudio,
   argueMootSessionWithFeedback,
   createMootSession,
   endMootSession,
   getMootMessages,
+  getMootCaseSessionsHistory,
+  getMootSessionHistory,
   listCases,
   mootTextToSpeech,
 } from "@/lib/api";
+
+import MootSessionsSidebar from "@/components/MootSessionsSidebar";
 
 export default function MootCourtPage() {
   const [cases, setCases] = useState<CaseSummary[]>([]);
   const [selectedCaseId, setSelectedCaseId] = useState("");
   const [sessionId, setSessionId] = useState("");
+  const [sessionStatus, setSessionStatus] = useState<"" | "active" | "ended">("");
+  const [sessionsHistory, setSessionsHistory] = useState<MootSessionHistoryItem[]>([]);
+  const [sessionsCollapsed, setSessionsCollapsed] = useState(false);
   const [messages, setMessages] = useState<MootMessage[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -47,8 +55,70 @@ export default function MootCourtPage() {
   }, []);
 
   useEffect(() => {
+    if (!selectedCaseId) {
+      setSessionsHistory([]);
+      setSessionId("");
+      setSessionStatus("");
+      setMessages([]);
+      setSummary(null);
+      return;
+    }
+
+    void (async () => {
+      setError("");
+      try {
+        const history = await getMootCaseSessionsHistory(selectedCaseId);
+        setSessionsHistory(history.sessions || []);
+
+        // If the current session doesn't belong to this case anymore, clear it.
+        if (sessionId && !history.sessions?.some((s) => s.session_id === sessionId)) {
+          setSessionId("");
+          setSessionStatus("");
+          setMessages([]);
+          setSummary(null);
+        }
+      } catch (err) {
+        setSessionsHistory([]);
+        setError(err instanceof Error ? err.message : "Could not load session history");
+      }
+    })();
+    // Intentionally *not* depending on sessionId to avoid reloading history on every message send.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCaseId]);
+
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  const readOnlySession = Boolean(sessionId && sessionStatus === "ended");
+
+  async function reloadHistory(caseId: string) {
+    if (!caseId) return;
+    try {
+      const history = await getMootCaseSessionsHistory(caseId);
+      setSessionsHistory(history.sessions || []);
+    } catch {
+      // Non-fatal: keep current UI state.
+    }
+  }
+
+  async function openSession(targetSessionId: string) {
+    if (!targetSessionId) return;
+    setBusy(true);
+    setError("");
+    try {
+      const data = await getMootSessionHistory(targetSessionId);
+      setSessionId(data.session_id);
+      setSessionStatus(data.status);
+      setMessages(data.messages || []);
+      setSummary(data.summary || null);
+      setInput("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not open session");
+    } finally {
+      setBusy(false);
+    }
+  }
 
   async function startSession() {
     if (!selectedCaseId) return;
@@ -58,8 +128,11 @@ export default function MootCourtPage() {
     try {
       const created = await createMootSession(selectedCaseId);
       setSessionId(created.session_id);
+      setSessionStatus("active");
       const transcript = await getMootMessages(created.session_id);
       setMessages(transcript.messages);
+      setSessionStatus(transcript.status === "ended" ? "ended" : "active");
+      await reloadHistory(selectedCaseId);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not start session");
     } finally {
@@ -69,7 +142,7 @@ export default function MootCourtPage() {
 
   async function sendArgument(event: React.FormEvent) {
     event.preventDefault();
-    if (!sessionId || !input.trim()) return;
+    if (!sessionId || readOnlySession || !input.trim()) return;
     const value = input.trim();
     setInput("");
     setBusy(true);
@@ -113,18 +186,22 @@ export default function MootCourtPage() {
     mediaRecorderRef.current = null;
     audioChunksRef.current = [];
 
-    if (!sessionId) return;
+    if (!sessionId || readOnlySession) return;
     const endedSessionId = sessionId;
     setBusy(true);
     setError("");
     try {
       const result = await endMootSession(endedSessionId);
       setSummary(result.summary);
+      setSessionStatus("ended");
       const transcript = await getMootMessages(endedSessionId);
       setMessages(transcript.messages);
 
+      await reloadHistory(selectedCaseId);
+
       // Reset UI so the user can start a new session.
       setSessionId("");
+      setSessionStatus("");
       setIsRecording(false);
       setIsMicProcessing(false);
     } catch (err) {
@@ -185,7 +262,7 @@ export default function MootCourtPage() {
   }
 
   async function startRecording() {
-    if (!sessionId || isRecording || busy || isMicProcessing) return;
+    if (!sessionId || readOnlySession || isRecording || busy || isMicProcessing) return;
     setError("");
     setIsRecording(true);
     setBusy(false);
@@ -259,6 +336,8 @@ export default function MootCourtPage() {
             },
           ]);
 
+          await reloadHistory(selectedCaseId);
+
           if (result.tts_audio_base64 && result.tts_mime) {
             void playTts(result.tts_audio_base64, result.tts_mime);
           }
@@ -303,39 +382,63 @@ export default function MootCourtPage() {
   }
 
   return (
-    <div>
-      <div className="page-header">
-        <h1>Moot Court Mode</h1>
-        <p>Multi-turn opposing counsel simulation grounded in your case files.</p>
-      </div>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: sessionsCollapsed ? "76px minmax(0, 1fr)" : "340px minmax(0, 1fr)",
+        gap: 16,
+        alignItems: "start",
+      }}
+    >
+      <MootSessionsSidebar
+        sessions={sessionsHistory}
+        activeSessionId={sessionId}
+        collapsed={sessionsCollapsed}
+        onToggleCollapsed={() => setSessionsCollapsed((v) => !v)}
+        onSelectSession={(id) => void openSession(id)}
+        onCreateNewSession={() => void startSession()}
+        disabled={busy || !selectedCaseId}
+      />
 
-      <section className="card" style={{ marginBottom: 16 }}>
-        <div className="row-wrap">
-          <label className="field-inline">
-            <span>Case</span>
-            <select value={selectedCaseId} onChange={(e) => setSelectedCaseId(e.target.value)} className="field-input">
-              <option value="">Select case</option>
-              {cases.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.title}
-                </option>
-              ))}
-            </select>
-          </label>
-          {!sessionId ? (
-            <button className="btn btn-primary" onClick={startSession} disabled={busy || !selectedCaseId}>
-              {busy ? "Starting..." : "Start Session"}
-            </button>
-          ) : (
-            <button className="btn btn-secondary" onClick={endSession} disabled={busy || isRecording || isMicProcessing}>
-              End Session
-            </button>
-          )}
+      <div>
+        <div className="page-header">
+          <h1>Moot Court Mode</h1>
+          <p>Multi-turn opposing counsel simulation grounded in your case files.</p>
         </div>
-        {error ? <p style={{ marginTop: 10, color: "var(--risk-high)" }}>{error}</p> : null}
-      </section>
 
-      <div className="chat-container">
+        <section className="card" style={{ marginBottom: 16 }}>
+          <div className="row-wrap">
+            <label className="field-inline">
+              <span>Case</span>
+              <select value={selectedCaseId} onChange={(e) => setSelectedCaseId(e.target.value)} className="field-input">
+                <option value="">Select case</option>
+                {cases.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.title}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            {!sessionId ? (
+              <button className="btn btn-primary" onClick={startSession} disabled={busy || !selectedCaseId}>
+                {busy ? "Starting..." : "Start Session"}
+              </button>
+            ) : sessionStatus === "active" ? (
+              <button className="btn btn-secondary" onClick={endSession} disabled={busy || isRecording || isMicProcessing}>
+                End Session
+              </button>
+            ) : (
+              <button className="btn btn-primary" onClick={startSession} disabled={busy || !selectedCaseId}>
+                {busy ? "Starting..." : "New Session"}
+              </button>
+            )}
+          </div>
+          {error ? <p style={{ marginTop: 10, color: "var(--risk-high)" }}>{error}</p> : null}
+          {readOnlySession ? <p className="muted" style={{ marginTop: 10 }}>Viewing an ended session (read-only).</p> : null}
+        </section>
+
+        <div className="chat-container">
         <div className="chat-header">
           <div>
             <h3 style={{ fontSize: "0.95rem", fontWeight: 700 }}>Opposing Counsel</h3>
@@ -397,7 +500,7 @@ export default function MootCourtPage() {
                 type="checkbox"
                 checked={ttsEnabled}
                 onChange={(e) => setTtsEnabled(e.target.checked)}
-                disabled={!sessionId || busy || isRecording || isMicProcessing}
+                  disabled={!sessionId || readOnlySession || busy || isRecording || isMicProcessing}
               />
               <span style={{ fontSize: "0.9rem" }}>Speak opponent response</span>
             </label>
@@ -406,7 +509,7 @@ export default function MootCourtPage() {
               <button
                 type="button"
                 className="btn btn-secondary"
-                disabled={!sessionId || busy}
+                disabled={!sessionId || readOnlySession || busy}
                 onClick={startRecording}
               >
                 Start Mic
@@ -433,9 +536,9 @@ export default function MootCourtPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="State your argument..."
-            disabled={!sessionId || busy || isRecording || isMicProcessing}
+            disabled={!sessionId || readOnlySession || busy || isRecording || isMicProcessing}
           />
-          <button className="btn btn-primary" disabled={!sessionId || busy || isRecording || isMicProcessing || !input.trim()}>
+          <button className="btn btn-primary" disabled={!sessionId || readOnlySession || busy || isRecording || isMicProcessing || !input.trim()}>
             Submit
           </button>
         </form>
@@ -449,6 +552,7 @@ export default function MootCourtPage() {
           <p style={{ marginTop: 8 }}>Weak points hit: {summary.weak_points_hit}</p>
         </section>
       ) : null}
+      </div>
     </div>
   );
 }

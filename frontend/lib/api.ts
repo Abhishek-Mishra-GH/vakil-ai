@@ -322,6 +322,14 @@ export async function getMootMessages(sessionId: string) {
   }>(`/api/moot/sessions/${sessionId}/messages`);
 }
 
+export async function getMootCaseSessionsHistory(caseId: string) {
+  return apiFetch<MootCaseSessionsHistoryResponse>(`/api/moot/cases/${caseId}/sessions/history`);
+}
+
+export async function getMootSessionHistory(sessionId: string) {
+  return apiFetch<MootSessionHistoryItem>(`/api/moot/sessions/${sessionId}/history`);
+}
+
 export async function mootTextToSpeech(text: string) {
   return apiFetch<{
     tts_audio_base64?: string;
@@ -535,6 +543,24 @@ export interface MootMessage {
   tts_mime?: string;
   tts_error?: string;
   created_at: string;
+}
+
+export interface MootSessionHistoryItem {
+  session_id: string;
+  case_id: string;
+  case_title?: string;
+  status: "active" | "ended";
+  exchange_count: number;
+  started_at: string;
+  ended_at: string | null;
+  summary: MootSummary | null;
+  messages: MootMessage[];
+}
+
+export interface MootCaseSessionsHistoryResponse {
+  case_id: string;
+  case_title: string;
+  sessions: MootSessionHistoryItem[];
 }
 
 export interface PrecedentResult {
