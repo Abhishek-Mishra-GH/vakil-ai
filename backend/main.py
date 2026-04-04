@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from config import BACKEND_DIR, REPO_ROOT, settings
 from database import close_pool, create_pool
 
-from routers import auth, documents, xray, cases, qa, search, brief
+from routers import auth, documents, xray, cases, qa, search, brief, contradictions
 # from routers import contradictions, moot
 
 
