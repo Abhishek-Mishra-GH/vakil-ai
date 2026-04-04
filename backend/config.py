@@ -72,6 +72,24 @@ class Settings(BaseSettings):
     MIN_CHUNK_CHARS: int = 80
     MAX_UPLOAD_SIZE_MB: int = 50
 
+    # ElevenLabs Speech (STT + TTS)
+    ELEVENLABS_API_KEY: str = ""
+    ELEVENLABS_VOICE_ID: str = ""
+    ELEVENLABS_STT_MODEL_ID: str = "scribe_v2"
+    ELEVENLABS_TTS_MODEL_ID: str = "eleven_multilingual_v2"
+    # Example: mp3_44100_128 (default)
+    ELEVENLABS_TTS_OUTPUT_FORMAT: str = "mp3_44100_128"
+
+    # ElevenLabs TTS tuning (optional)
+    # Ranges are enforced by ElevenLabs; leaving defaults preserves current behavior.
+    ELEVENLABS_TTS_STABILITY: float = 0.5
+    ELEVENLABS_TTS_SIMILARITY_BOOST: float = 0.75
+    ELEVENLABS_TTS_STYLE: float = 0.0
+    ELEVENLABS_TTS_SPEED: float = 1.0
+    ELEVENLABS_TTS_USE_SPEAKER_BOOST: bool = True
+    # auto | on | off
+    ELEVENLABS_TTS_APPLY_TEXT_NORMALIZATION: str = "auto"
+
     @field_validator("DEBUG", "AUTO_APPLY_SCHEMA", mode="before")
     @classmethod
     def _parse_debug(cls, value: Any) -> bool:
